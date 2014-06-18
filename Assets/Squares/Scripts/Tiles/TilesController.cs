@@ -5,9 +5,10 @@ public class TilesController : GameController {
 
 	public GameObject tilePrefab;
 	public Vector2 boardDimensions;
+	public float tileWidth = 1f;
 	public float tileSpacing;
 
-	TileCollection tileCollection;
+	public TileCollection tileCollection;
 
 	// Use this for initialization
 	void Start () {

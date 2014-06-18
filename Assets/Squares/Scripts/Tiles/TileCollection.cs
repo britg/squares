@@ -18,6 +18,35 @@ public class TileCollection {
 		}
 	}
 
+	public Tile TileAt (Vector2 coords) {
+		if (OutOfBounds(coords)) {
+			return null;
+		}
+
+		return tiles[(int)coords.x, (int)coords.y];
+	}
+
+	bool OutOfBounds (Vector2 coords) {
+		if (coords.x < 0 || coords.x >= tiles.GetLength(0)) {
+			return true;
+		}
+
+		if (coords.y < 0 || coords.y >= tiles.GetLength(1)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public Tile[] AdjacentTiles (Tile tile) {
+		Tile[] tiles = new Tile[4];
+		tiles[0] = TileAt(tile.pos - new Vector2(-1, 0));
+		tiles[1] = TileAt(tile.pos - new Vector2(1, 0));
+		tiles[2] = TileAt(tile.pos - new Vector2(0, 1));
+		tiles[3] = TileAt(tile.pos - new Vector2(0, -1));
+		return tiles;
+	}
+
 	Tile TopLeft () {
 		return tiles[0, tiles.GetLength(1)-1];
 	}

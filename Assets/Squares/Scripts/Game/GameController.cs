@@ -3,6 +3,14 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
+	public enum InputMode {
+		Mouse,
+		Controller,
+		Touch
+	}
+
+	public static InputMode inputMode = InputMode.Mouse;
+
 	protected GameObject playerObject {
 		get { return GameObject.Find("Player"); }
 	}
@@ -25,5 +33,15 @@ public class GameController : MonoBehaviour {
 
 	protected Player opponent {
 		get { return opponentController.opponent; }
+	}
+
+	protected IInputController inputController {
+		get {
+			if (inputMode == InputMode.Mouse) {
+				return playerObject.GetComponent<MouseInputController>();
+			}
+
+			return playerObject.GetComponent<MouseInputController>();
+		}
 	}
 }

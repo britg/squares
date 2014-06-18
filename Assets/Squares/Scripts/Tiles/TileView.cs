@@ -5,7 +5,7 @@ public class TileView : MonoBehaviour {
 
 	public TilesController tilesController;
 
-	Tile tile;
+	public Tile tile;
 
 	public void Initialize (Tile _tile, TilesController _tilesController) {
 		tilesController = _tilesController;
@@ -29,7 +29,7 @@ public class TileView : MonoBehaviour {
 			GameObject prefab = PrefabForTileState();
 			GameObject stateObj = (GameObject)Instantiate(prefab);
 			stateObj.transform.parent = transform;
-			stateObj.transform.localPosition = Vector3.zero;
+			stateObj.transform.localPosition = new Vector3(0f, 0f, TileView.zIndexForLayer(Tile.Layer.Color));
 		}
 	}
 
@@ -52,8 +52,8 @@ public class TileView : MonoBehaviour {
 	}
 	
 	Vector3 PositionForTile (Tile tile, Tile.Layer layer) {
-		float x =  tile.row + tile.row * tilesController.tileSpacing;
-		float y =  tile.col + tile.col * tilesController.tileSpacing;
+		float y =  tile.row + tile.row * tilesController.tileSpacing;
+		float x =  tile.col + tile.col * tilesController.tileSpacing;
 		return new Vector3(x, y, TileView.zIndexForLayer(layer));
 	}
 	
@@ -64,10 +64,10 @@ public class TileView : MonoBehaviour {
 			zIndex = 0f;
 			break;
 		case Tile.Layer.Color:
-			zIndex = 0.01f;
+			zIndex = -0.01f;
 			break;
 		case Tile.Layer.Occupant:
-			zIndex = 0.02f;
+			zIndex = -0.02f;
 			break;
 		}
 		return zIndex;

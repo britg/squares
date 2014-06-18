@@ -11,7 +11,8 @@ public class Tile {
 	public enum State {
 		Empty,
 		Half,
-		Full
+		Full,
+		Hinted
 	}
 
 	public enum Layer {
@@ -66,4 +67,8 @@ public class Tile {
 		state = Tile.State.Full;
 	}
 
+	public override string ToString ()
+	{
+		return string.Format ("[Tile: row={0}, col={1}, isEmpty={2}, unOwned={3}, unOccupied={4}, color={5}]", row, col, isEmpty, unOwned, unOccupied, color);
+	}
 }
