@@ -7,6 +7,10 @@ public class DropController : GameController  {
 		get { return GameObject.Find("Play Tray").GetComponent<DropTrayController>(); }
 	}
 
+	UISprite sprite {
+		get { return GetComponent<UISprite>(); }
+	}
+
 	public Drop drop;
 	public int trayPosition;
 
@@ -20,16 +24,25 @@ public class DropController : GameController  {
 	
 	}
 
+	public void SetDrop (Drop _drop) {
+		drop = _drop;
+		UpdateSprite();
+	}
+
 	public void RotateDrop () {
-		drop.Rotate();
-		iTween.RotateBy (gameObject, new Vector3(0f, 0f, -0.25f), 0.3f);
+		// Need to decouple the tween rotation here
+		if (iTween.Count(gameObject) < 1) {
+			drop.Rotate();
+			iTween.RotateBy (gameObject, new Vector3(0f, 0f, -0.25f), 0.3f);
+		}
 	}
 
 	public void CommitDrop () {
 		DropValidator dropValidator = new DropValidator(tileCollection);
 
-		if (dropValidator.ValidDrop(drop, inputController.currentHoverTile, player)) {
-			Tile[] dropTiles = dropValidator.GetTilesForDrop(drop, inputController.currentHoverTile);
+		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, player);
+
+		if (dropTiles != null) {
 			foreach(Tile tile in dropTiles) {
 				tile.SetOwner(player);
 			}
@@ -44,6 +57,10 @@ public class DropController : GameController  {
 		iTween.MoveTo(gameObject, iTween.Hash("isLocal", true, 
 		                                      "position", playTrayController.playableDropPosition, 
 		                                      "time", 0.5f));
+	}
+
+	public void UpdateSprite () {
+		sprite.spriteName = drop.pattern.ToString().ToLower();
 	}
 
 }

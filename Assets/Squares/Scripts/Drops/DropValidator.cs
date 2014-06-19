@@ -13,6 +13,41 @@ public class DropValidator {
 		if (startTile == null) {
 			return false;
 		}
+
+		return TestDropAtTile (drop, startTile, player);
+	}
+
+	public Tile[] ValidDropTiles (Drop drop, Tile startTile, Player player) {
+		if (startTile == null) {
+			return null;
+		}
+
+		// get list of possible start tiles - the inverse of the pattern tiles
+		// On the first succcess, return it
+		// need to save the tiles chosen.
+		bool valid = false;
+		Tile[] adjacentTiles = tileCollectionReference.AdjacentTiles(startTile);
+		Tile[] testTiles = new Tile[adjacentTiles.Length+1];
+		testTiles[0] = startTile;
+		for (int i = 1; i <= adjacentTiles.Length; i++) {
+			testTiles[i] = adjacentTiles[i-1];
+		}
+
+		foreach (Tile tile in testTiles) {
+			if (tile == null) {
+				continue;
+			}
+			valid = TestDropAtTile (drop, tile, player);
+			if (valid) {
+				return GetTilesForDrop(drop, tile);
+			}
+		}
+
+		return null;
+	}
+
+	bool TestDropAtTile (Drop drop, Tile startTile, Player player) {
+
 		Tile[] tiles = GetTilesForDrop(drop, startTile);
 		
 		// All valid tiles?
@@ -52,7 +87,7 @@ public class DropValidator {
 			return false;
 		}
 
-		if (tile.state == Tile.State.Full || tile.state == Tile.State.Half) {
+		if (tile.state == Tile.State.Full) {
 			return false;
 		}
 

@@ -61,7 +61,7 @@ public class Tile {
 
 	public void SetOwner (Player player) {
 		owner = player;
-		state = Tile.State.Half;
+		state = Tile.State.Full;
 	}
 
 	public void Hint (Player player) {

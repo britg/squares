@@ -36,14 +36,6 @@ public class DropHintController : GameController {
 		bool hoverTileChanged = previousHoverTile != inputController.currentHoverTile;
 		bool dropRotationChanged = previousDropRotation != inputController.currentDropController.drop.rotation;
 
-		if (hoverTileChanged) {
-			Debug.Log ("Hover tile changed");
-		}
-
-		if (dropRotationChanged) {
-			Debug.Log ("Drop rotation changed");
-		}
-
 		if (hoverTileChanged || dropRotationChanged) {
 			Hint();
 		}
@@ -62,8 +54,9 @@ public class DropHintController : GameController {
 		dropValidator = new DropValidator(tileCollection);
 		Drop drop = inputController.currentDropController.drop;
 
-		if (dropValidator.ValidDrop(drop, inputController.currentHoverTile, player)) {
-			Tile[] dropTiles = dropValidator.GetTilesForDrop(drop, inputController.currentHoverTile);
+		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, player);
+
+		if (dropTiles != null) {
 			foreach(Tile tile in dropTiles) {
 				tile.Hint(player);
 			}

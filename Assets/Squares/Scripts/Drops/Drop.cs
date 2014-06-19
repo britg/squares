@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Reflection;
 
 [System.Serializable]
 public class Drop {
@@ -36,6 +37,10 @@ public class Drop {
 		return randomPattern;
 	}
 
+	static Vector2 V (int x, int y) {
+		return new Vector2(x, y);
+	}
+
 	public Vector2[] offsets {
 		get {
 			return Drop.OffsetsForPattern(pattern, rotation);
@@ -66,63 +71,119 @@ public class Drop {
 	}
 
 	public static int TileCountForPattern (Drop.Pattern pattern) {
-		// TEMP
-		return TileCountForZ();
-	}
-
-	public static int TileCountForZ () {
 		return 4;
 	}
 
 	public static Vector2[] OffsetsForPattern (Drop.Pattern pattern, Drop.Rotation rotation) {
-		// TEMP
-		return OffsetsForZ(rotation);
+		string p = pattern.ToString();
+		string r = rotation.ToString();
+
+		return (Vector2[])typeof(Drop).GetMethod("OffsetsFor" + p + r).Invoke(typeof(Drop), null);
 	}
 
-	public static Vector2[] OffsetsForZ (Drop.Rotation rotation) {
+	// I
 
-		switch (rotation) {
-		case Rotation.Default:
-			return OffsetsForZDefault();
-		case Rotation.Up:
-			return OffsetsForZUp();
-		case Rotation.Right:
-			return OffsetsForZRight();
-		case Rotation.Down:
-			return OffsetsForZDown();
-		default:
-				break;
-		}
-
-		return OffsetsForZDefault();
+	public static Vector2[] OffsetsForIDefault () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(0, 2), V(0, 3) };
 	}
+	public static Vector2[] OffsetsForIUp () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(2, 0), V(3, 0) };
+	}
+	public static Vector2[] OffsetsForIRight () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(0, 2), V(0, 3) };
+	}
+	public static Vector2[] OffsetsForIDown () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(2, 0), V(3, 0) };
+	}
+
+	// J
+
+	public static Vector2[] OffsetsForJDefault () {
+		return new Vector2[4] { V(0, 0), V(-1, 0), V(0, 1), V(0, 2) };
+	}
+	public static Vector2[] OffsetsForJUp () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(1, 0), V(2, 0) };
+	}
+	public static Vector2[] OffsetsForJRight () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(0, -1), V(0, -2) };
+	}
+	public static Vector2[] OffsetsForJDown () {
+		return new Vector2[4] { V(0, 0), V(0, -1), V(-1, 0), V(-2, 0) };
+	}
+
+	// L
+
+	public static Vector2[] OffsetsForLDefault () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(0, 1), V(0, 2) };
+	}
+	public static Vector2[] OffsetsForLUp () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(2, 0), V(0, -1) };
+	}
+	public static Vector2[] OffsetsForLRight () {
+		return new Vector2[4] { V(0, 0), V(-1, 0), V(0, -1), V(0, -2) };
+	}
+	public static Vector2[] OffsetsForLDown () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(-1, 0), V(-2, 0) };
+	}
+
+	// O
+
+	public static Vector2[] OffsetsForODefault () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(1, 1), V(1, 0) };
+	}
+	public static Vector2[] OffsetsForOUp () {
+		return OffsetsForODefault();
+	}
+	public static Vector2[] OffsetsForORight () {
+		return OffsetsForODefault();
+	}
+	public static Vector2[] OffsetsForODown () {
+		return OffsetsForODefault();
+	}
+
+	// S
+
+	public static Vector2[] OffsetsForSDefault () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(1, 1), V(-1, 0) };
+	}
+	public static Vector2[] OffsetsForSUp () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(1, -1), V(0, 1) };
+	}
+	public static Vector2[] OffsetsForSRight () {
+		return OffsetsForSDefault();
+	}
+	public static Vector2[] OffsetsForSDown () {
+		return OffsetsForSUp();
+	}
+
+	// T
+
+	public static Vector2[] OffsetsForTDefault () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(-1, 0), V(0, -1) };
+	}
+	public static Vector2[] OffsetsForTUp () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(0, -1), V(-1, 0) };
+	}
+	public static Vector2[] OffsetsForTRight () {
+		return new Vector2[4] { V(0, 0), V(1, 0), V(-1, 0), V(0, 1) };
+	}
+	public static Vector2[] OffsetsForTDown () {
+		return new Vector2[4] { V(0, 0), V(0, 1), V(0, -1), V(1, 0) };
+	}
+
+	// Z
 
 	public static Vector2[] OffsetsForZDefault () {
-		return new Vector2[4] { new Vector2(0, 0),
-								new Vector2(1, 0),
-								new Vector2(0, 1),
-								new Vector2(-1, 1) };
+		return new Vector2[4] { V(0, 0), V(1, 0), V(0, 1), V(-1, 1) };
 	}
-
 	public static Vector2[] OffsetsForZUp () {
-		return new Vector2[4] { new Vector2(0, 0),
-								new Vector2(1, 0),
-								new Vector2(0, -1),
-								new Vector2(1, 1) };
+		return new Vector2[4] { V(0, 0), V(1, 0), V(0, -1), V(1, 1) };
 	}
-
 	public static Vector2[] OffsetsForZRight () {
-		return new Vector2[4] { new Vector2(-1, 0),
-								new Vector2(0, 0),
-								new Vector2(0, -1),
-								new Vector2(1, -1) };
+		return OffsetsForZDefault();
 	}
-
 	public static Vector2[] OffsetsForZDown () {
-		return new Vector2[4] { new Vector2(0, 1),
-								new Vector2(0, 0),
-								new Vector2(-1, 0),
-								new Vector2(-1, -1) };
+		return OffsetsForZUp();
 	}
 
 }

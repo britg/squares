@@ -40,7 +40,7 @@ public class DropTrayController : MonoBehaviour {
 		GameObject dropObj = NGUITools.AddChild(gameObject, dropPrefab);
 		dropObj.transform.localPosition = initialDropPosition + new Vector3(0f, dropSpacing*pos, 0f);
 		DropController dropController = dropObj.GetComponent<DropController>();
-		dropController.drop = drop;
+		dropController.SetDrop(drop);
 		dropController.trayPosition = pos;
 	}
 
