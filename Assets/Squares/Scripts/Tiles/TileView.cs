@@ -3,6 +3,8 @@ using System.Collections;
 
 public class TileView : MonoBehaviour {
 
+	public static Hashtable prefabCache = new Hashtable();
+
 	public TilesController tilesController;
 
 	public Tile tile;
@@ -10,6 +12,7 @@ public class TileView : MonoBehaviour {
 	public void Initialize (Tile _tile, TilesController _tilesController) {
 		tilesController = _tilesController;
 		SetTile(_tile);
+		NotificationCenter.AddObserver(this, Notifications.TileStateChange);
 	}
 
 	public void SetTile (Tile _tile) {
@@ -22,11 +25,15 @@ public class TileView : MonoBehaviour {
 		transform.position = PositionForTile(tile);
 	}
 
+	void OnTileStateChange () {
+		DrawTileState();
+	}
+
 	void DrawTileState () {
-		if (tile.unOwned) {
-			ClearTile();
-		} else {
-			GameObject prefab = PrefabForTileState();
+		ClearTile();
+		GameObject prefab = PrefabForTileState();
+
+		if (prefab != null) {
 			GameObject stateObj = (GameObject)Instantiate(prefab);
 			stateObj.transform.parent = transform;
 			stateObj.transform.localPosition = new Vector3(0f, 0f, TileView.zIndexForLayer(Tile.Layer.Color));
@@ -40,10 +47,18 @@ public class TileView : MonoBehaviour {
 	}
 
 	GameObject PrefabForTileState () {
-		string color = tile.color.ToString();
+		string color = tile.color;
 		string state = tile.state.ToString();
 		string resource = color + " Tile " + state;
-		GameObject prefab = (GameObject)Resources.Load(resource);
+		GameObject prefab;
+
+		if (TileView.prefabCache[resource] != null) {
+			prefab = (GameObject)TileView.prefabCache[resource];
+		} else {
+			prefab = (GameObject)Resources.Load(resource);
+			TileView.prefabCache[resource] = prefab;
+		}
+
 		return prefab;
 	}
 

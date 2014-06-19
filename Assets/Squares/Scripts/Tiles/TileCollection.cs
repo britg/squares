@@ -9,6 +9,7 @@ public class TileCollection {
 	public Tile topRight { get { return TopRight(); } }
 
 	public TileCollection (Vector2 dimensions) {
+		Debug.Log ("Dimensions are " + dimensions);
 		tiles = new Tile[(int)dimensions.x, (int)dimensions.y];
 		for (int x = 0; x < dimensions.x; x++) {
 			for (int y = 0; y < dimensions.y; y++) {
@@ -16,6 +17,18 @@ public class TileCollection {
 				tiles[x, y] = tile;
 			}
 		}
+	}
+
+	public Tile[] allTiles () {
+		Tile[] allTiles = new Tile[tiles.Length];
+		int i = 0;
+		for (int x = 0; x < tiles.GetLength(0); x++) {
+			for (int y = 0; y < tiles.GetLength(1); y++) {
+				allTiles[i] = tiles[x, y];
+				i++;
+			}
+		}
+		return allTiles;
 	}
 
 	public Tile TileAt (Vector2 coords) {

@@ -24,6 +24,18 @@ public class Drop {
 	public Drop.Pattern pattern;
 	public Drop.Rotation rotation = Drop.Rotation.Default;
 
+	public static Drop RandomDrop () {
+		Drop drop = new Drop();
+		drop.pattern = Drop.RandomPattern();
+		return drop;
+	}
+
+	public static Drop.Pattern RandomPattern () {
+		var values = System.Enum.GetValues(typeof(Drop.Pattern));
+		Drop.Pattern randomPattern = (Drop.Pattern)values.GetValue(Random.Range(0, values.Length));
+		return randomPattern;
+	}
+
 	public Vector2[] offsets {
 		get {
 			return Drop.OffsetsForPattern(pattern, rotation);

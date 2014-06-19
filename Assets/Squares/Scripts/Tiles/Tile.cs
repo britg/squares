@@ -28,43 +28,52 @@ public class Tile {
 
 	public int row { get { return (int)pos.y; } }
 	public int col { get { return (int)pos.x; } }
+	public bool isEmpty { get { return unOwned && unOccupied; } }
+	public bool hinted { get { return state == State.Hinted; } }
+	public bool owned { get { return owner != null; } }
+	public bool unOwned { get { return owner == null; } }
+	public bool unOccupied { get { return occupant == null; } }
 
-	public Tile (Vector2 _pos) {
-		pos = _pos;
-	}
-
-	public bool isEmpty {
-		get {
-			return unOwned && unOccupied;
-		}
-	}
-
-	public bool unOwned {
-		get {
-			return owner == null;
-		}
-	}
-
-	public bool unOccupied {
-		get {
-			return occupant == null;
-		}
-	}
+	string hintColor;
 
 	public string color {
 		get {
 			if (owner != null) {
 				return owner.color.ToString();
+			} else if (hintColor != null) {
+				return hintColor;
 			} else {
 				return null;
 			}
 		}
 	}
 
+	public Tile (Vector2 _pos) {
+		pos = _pos;
+	}
+
+
 	public void SetPlayer (Player player) {
 		owner = player;
 		occupant = player;
 		state = Tile.State.Full;
+	}
+
+	public void SetOwner (Player player) {
+		owner = player;
+		state = Tile.State.Half;
+	}
+
+	public void Hint (Player player) {
+		state = State.Hinted;
+		hintColor = player.color.ToString();
+	}
+
+	public void Unhint () {
+		if (state == State.Hinted) {
+			state = State.Empty;
+			hintColor = null;
+		}
 	}
 
 	public override string ToString ()

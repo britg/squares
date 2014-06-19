@@ -11,6 +11,7 @@ public class MouseInputController : MonoBehaviour, IInputController {
 	bool mouseHold { get { return Input.GetMouseButton(0); } }
 	bool mouseUp { get { return Input.GetMouseButtonUp(0); } }
 	bool mouseRightDown { get { return Input.GetMouseButtonDown(1); } }
+	bool mouseMoved { get { return Input.GetAxis("Mouse X") > 0f || Input.GetAxis("Mouse Y") > 0f; } }
 
 	bool _uiLock = false;
 	public bool uiLock { get { return _uiLock; } }
@@ -20,6 +21,9 @@ public class MouseInputController : MonoBehaviour, IInputController {
 
 	DropController _currentDropController;
 	public DropController currentDropController { get { return _currentDropController; } }
+
+	Tile _currentHoverTile;
+	public Tile currentHoverTile { get { return _currentHoverTile; } }
 
 	Vector3 lastPos;
 
@@ -45,9 +49,17 @@ public class MouseInputController : MonoBehaviour, IInputController {
 			MoveFrame();
 		}
 
-		if (_uiLock && mouseHold && _holdingDrop && mouseRightDown) {
-			Debug.Log ("Rotate tile");
-			_currentDropController.RotateDrop();
+		if (_uiLock && mouseHold) {
+			CheckTileHit();
+
+			if (_holdingDrop && mouseRightDown) {
+				_currentDropController.RotateDrop();
+			}
+		}
+
+		if (mouseUp && _holdingDrop) {
+			CheckTileHit();
+			_currentDropController.CommitDrop();
 		}
 
 		if (mouseUp) {
@@ -78,6 +90,27 @@ public class MouseInputController : MonoBehaviour, IInputController {
 		}
 
 		return didHit;
+	}
+
+	bool CheckTileHit () {
+		
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		
+		if (Physics.Raycast(ray, out hit)) {
+			GameObject hitObj = hit.collider.gameObject;
+			TileView tileView = hitObj.GetComponent<TileView>();
+			if (tileView != null) {
+				_currentHoverTile = tileView.tile;
+			} else {
+				_currentHoverTile = null;
+			}
+		} else {
+			_currentHoverTile = null;
+		}
+		
+		
+		return _currentHoverTile != null;
 	}
 
 	void SelectObj (GameObject obj) {

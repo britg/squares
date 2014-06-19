@@ -10,6 +10,9 @@ public class DropValidator {
 	}
 
 	public bool ValidDrop (Drop drop, Tile startTile, Player player) {
+		if (startTile == null) {
+			return false;
+		}
 		Tile[] tiles = GetTilesForDrop(drop, startTile);
 		
 		// All valid tiles?
@@ -29,7 +32,7 @@ public class DropValidator {
 		return oneAdjacent;
 	}
 	
-	Tile[] GetTilesForDrop (Drop drop, Tile startTile) {
+	public Tile[] GetTilesForDrop (Drop drop, Tile startTile) {
 		Tile[] tiles = new Tile[drop.tileCount];
 		
 		int i = 0;

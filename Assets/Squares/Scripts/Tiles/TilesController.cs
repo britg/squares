@@ -8,7 +8,7 @@ public class TilesController : GameController {
 	public float tileWidth = 1f;
 	public float tileSpacing;
 
-	public TileCollection tileCollection;
+	new public TileCollection tileCollection;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +32,7 @@ public class TilesController : GameController {
 		int rows = tileCollection.tiles.GetLength(1);
 		for (int col = 0; col < cols; col++) {
 			for (int row = 0; row < rows; row++) {
-				Tile tile = tileCollection.tiles[row, col];
+				Tile tile = tileCollection.tiles[col, row];
 				CreateTile(tile);
 			}
 		}

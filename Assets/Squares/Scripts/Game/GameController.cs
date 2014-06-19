@@ -11,37 +11,96 @@ public class GameController : MonoBehaviour {
 
 	public static InputMode inputMode = InputMode.Mouse;
 
+	GameObject _playerObject;
 	protected GameObject playerObject {
-		get { return GameObject.Find("Player"); }
+		get { 
+			if (_playerObject == null) {
+				_playerObject = GameObject.Find("Player"); 
+			}
+			return _playerObject;
+		}
 	}
 
+	PlayerController _playerController;
 	protected PlayerController playerController {
-		get { return playerObject.GetComponent<PlayerController>(); }
+		get { 
+			if (_playerController == null) {
+				_playerController = playerObject.GetComponent<PlayerController>(); 
+			}
+			return _playerController;
+		}
 	}
 
+	Player _player;
 	protected Player player {
-		get { return playerController.player; }
+		get { 
+			if (_player == null) {
+				_player = playerController.player; 
+			}
+			return _player;
+		}
 	}
 
+	GameObject _opponentObject;
 	protected GameObject opponentObject {
-		get { return GameObject.Find("Opponent"); }
+		get { 
+			if (_opponentObject == null) {
+				_opponentObject = GameObject.Find("Opponent"); 
+			}
+			return _opponentObject;
+		}
 	}
 
+	OpponentController _opponentController;
 	protected OpponentController opponentController {
-		get { return opponentObject.GetComponent<OpponentController>(); }
+		get { 
+			if (_opponentController == null) {
+				_opponentController = opponentObject.GetComponent<OpponentController>(); 
+			}
+			return _opponentController;
+		}
 	}
 
+	Player _opponent;
 	protected Player opponent {
-		get { return opponentController.opponent; }
+		get { 
+			if (_opponent == null) {
+				_opponent = opponentController.opponent;
+			}
+			return _opponent;
+		}
 	}
 
+	IInputController _inputController;
 	protected IInputController inputController {
 		get {
-			if (inputMode == InputMode.Mouse) {
-				return playerObject.GetComponent<MouseInputController>();
+			if (_inputController == null) {
+				if (inputMode == InputMode.Mouse) {
+					_inputController = playerObject.GetComponent<MouseInputController>();
+				}
 			}
 
-			return playerObject.GetComponent<MouseInputController>();
+			return _inputController;
+		}
+	}
+
+	TilesController _tilesController;
+	protected TilesController tilesController {
+		get { 
+			if (_tilesController == null) {
+				_tilesController = GameObject.Find("Board").GetComponent<TilesController>(); 
+			}
+			return _tilesController;
+		}
+	}
+
+	TileCollection _tileCollection;
+	protected TileCollection tileCollection {
+		get { 
+			if (_tileCollection == null) {
+				_tileCollection = tilesController.tileCollection; 
+			}
+			return _tileCollection;
 		}
 	}
 }

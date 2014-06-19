@@ -7,4 +7,6 @@ public interface IInputController {
 	bool uiLock { get; }
 
 	DropController currentDropController { get; }
+
+	Tile currentHoverTile { get; }
 }
