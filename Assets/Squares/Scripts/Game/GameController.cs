@@ -84,11 +84,21 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	GameObject _boardObject;
+	protected GameObject boardObject {
+		get {
+			if (_boardObject == null) {
+				_boardObject = GameObject.Find("Board");
+			}
+			return _boardObject;
+		}
+	}
+
 	TilesController _tilesController;
 	protected TilesController tilesController {
 		get { 
 			if (_tilesController == null) {
-				_tilesController = GameObject.Find("Board").GetComponent<TilesController>(); 
+				_tilesController = boardObject.GetComponent<TilesController>(); 
 			}
 			return _tilesController;
 		}
@@ -103,4 +113,35 @@ public class GameController : MonoBehaviour {
 			return _tileCollection;
 		}
 	}
+
+	GameObject _dropQueueObj;
+	protected GameObject dropQueueObj {
+		get {
+			if (_dropQueueObj == null) {
+				_dropQueueObj = GameObject.Find ("Drop Queue");
+			}
+			return _dropQueueObj;
+		}
+	}
+
+	DropQueueController _dropQueueController;
+	protected DropQueueController dropQueueController {
+		get {
+			if (_dropQueueController == null) {
+				_dropQueueController = dropQueueObj.GetComponent<DropQueueController>();
+			}
+			return _dropQueueController;
+		}
+	}
+
+	TurnController _turnController;
+	protected TurnController turnController {
+		get {
+			if (_turnController == null) {
+				_turnController = boardObject.GetComponent<TurnController>();
+			}
+			return _turnController;
+		}
+	}
+
 }

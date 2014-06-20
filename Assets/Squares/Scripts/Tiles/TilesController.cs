@@ -4,7 +4,9 @@ using System.Collections;
 public class TilesController : GameController {
 
 	public GameObject tilePrefab;
+	public Vector2 baseBlockDimensions;
 	public Vector2 boardDimensions;
+	public Vector2 completeDimensions { get { return Vector2.Scale(boardDimensions, baseBlockDimensions); } }
 	public float tileWidth = 1f;
 	public float tileSpacing;
 
@@ -22,7 +24,7 @@ public class TilesController : GameController {
 	}
 
 	void StartTiles () {
-		tileCollection = new TileCollection(boardDimensions);
+		tileCollection = new TileCollection(completeDimensions, baseBlockDimensions);
 		tileCollection.bottomLeft.SetPlayer(player);
 		tileCollection.topRight.SetPlayer(opponent);
 	}

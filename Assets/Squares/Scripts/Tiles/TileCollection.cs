@@ -8,8 +8,10 @@ public class TileCollection {
 	public Tile bottomLeft { get { return BottomLeft(); } }
 	public Tile topRight { get { return TopRight(); } }
 
-	public TileCollection (Vector2 dimensions) {
-		Debug.Log ("Dimensions are " + dimensions);
+	public Vector2 blockSize;
+
+	public TileCollection (Vector2 dimensions, Vector2 _blockSize) {
+		blockSize = _blockSize;
 		tiles = new Tile[(int)dimensions.x, (int)dimensions.y];
 		for (int x = 0; x < dimensions.x; x++) {
 			for (int y = 0; y < dimensions.y; y++) {

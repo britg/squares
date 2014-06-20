@@ -27,7 +27,6 @@ public class DropHintController : GameController {
 			if (wasHoldingDrop) {
 				wasHoldingDrop = false;
 				Unhint();
-				NotificationCenter.PostNotification(this, Notifications.TileStateChange);
 			}
 			return;
 		}

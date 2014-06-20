@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		NotificationCenter.AddObserver(this, Notifications.BlockOwnershipChange);
 	}
 	
 	// Update is called once per frame

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DropTrayController : MonoBehaviour {
+public class DropQueueController : MonoBehaviour {
 
 	Vector3 initialDropPosition;
 	public Vector3 playableDropPosition;
@@ -10,11 +10,14 @@ public class DropTrayController : MonoBehaviour {
 
 	public GameObject dropPrefab;
 
+	DropQueue dropQueue;
+
 	// Use this for initialization
 	void Start () {
 		GetInitialDropPosition();
-		Invoke("SeedDrop", 1f);
+		dropQueue = new DropQueue(initialDropCount);
 		NotificationCenter.AddObserver(this, Notifications.DropUsed);
+		Invoke("RenderDrops", 1f);
 	}
 	
 	// Update is called once per frame
@@ -27,21 +30,28 @@ public class DropTrayController : MonoBehaviour {
 		initialDropPosition.y = bounds.center.y / 2f + 100;
 	}
 
-	void SeedDrop () {
-		for (int i = 0; i < initialDropCount; i++) {
-			Drop drop = Drop.RandomDrop();
-			AddDrop(drop, i);
+	void RenderDrops () {
+		foreach(Drop drop in dropQueue.dropList) {
+			DropController dropController = ControllerForDrop(drop);
+			dropController.AnimateToQueuePosition();
 		}
-
-		AnimateToTrayPositions();
 	}
 
-	void AddDrop (Drop drop, int pos) {
+	DropController ControllerForDrop (Drop drop) {
+		GameObject dropObject = GameObject.Find("Drop " + drop.sequenceId);
+		if (dropObject == null) {
+			dropObject = CreateObjectForDrop(drop);
+		}
+		return dropObject.GetComponent<DropController>();
+	}
+
+	GameObject CreateObjectForDrop (Drop drop) {
 		GameObject dropObj = NGUITools.AddChild(gameObject, dropPrefab);
-		dropObj.transform.localPosition = initialDropPosition + new Vector3(0f, dropSpacing*pos, 0f);
+		dropObj.name = drop.name;
+		dropObj.transform.localPosition = initialDropPosition + new Vector3(0f, dropSpacing*drop.currentQueuePosition, 0f);
 		DropController dropController = dropObj.GetComponent<DropController>();
 		dropController.SetDrop(drop);
-		dropController.trayPosition = pos;
+		return dropObj;
 	}
 
 	DropController[] DropControllers () {
@@ -57,25 +67,11 @@ public class DropTrayController : MonoBehaviour {
 		return controllers;
 	}
 
-	void AnimateToTrayPositions () {
-		foreach (DropController dropController in DropControllers()) {
-			Vector3 pos = playableDropPosition + new Vector3(0f, dropController.trayPosition*dropSpacing, 0f);
-			iTween.MoveTo (dropController.gameObject, iTween.Hash("position", pos, "isLocal", true, "time", 0.5f));
-		}
-	}
-
-	void OnDropUsed () {
-		Backfill();
-	}
-
-	void Backfill () {
-		foreach (DropController dropController in DropControllers()) {
-			dropController.trayPosition -= 1;
-		}
-
-		AddDrop(Drop.RandomDrop(), initialDropCount - 1);
-
-		AnimateToTrayPositions();
+	public void DropUsed (Drop drop) {
+		dropQueue.UseDrop(drop);
+		DropController dropController = ControllerForDrop(drop);
+		dropController.Destroy();
+		RenderDrops();
 	}
 
 }

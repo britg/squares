@@ -12,7 +12,8 @@ public class Drop {
 		O,
 		S,
 		T,
-		Z
+		Z,
+		Dot
 	}
 
 	public enum Rotation {
@@ -24,6 +25,12 @@ public class Drop {
 
 	public Drop.Pattern pattern;
 	public Drop.Rotation rotation = Drop.Rotation.Default;
+	public int currentQueuePosition;
+	public int sequenceId;
+
+	public string name {
+		get { return "Drop " + sequenceId; }
+	}
 
 	public static Drop RandomDrop () {
 		Drop drop = new Drop();
@@ -71,7 +78,11 @@ public class Drop {
 	}
 
 	public static int TileCountForPattern (Drop.Pattern pattern) {
-		return 4;
+		return OffsetsForPattern(pattern).Length;
+	}
+
+	public static Vector2[] OffsetsForPattern(Drop.Pattern pattern) {
+		return OffsetsForPattern(pattern, Drop.Rotation.Default);
 	}
 
 	public static Vector2[] OffsetsForPattern (Drop.Pattern pattern, Drop.Rotation rotation) {
@@ -184,6 +195,21 @@ public class Drop {
 	}
 	public static Vector2[] OffsetsForZDown () {
 		return OffsetsForZUp();
+	}
+
+	// Dot
+	
+	public static Vector2[] OffsetsForDotDefault () {
+		return new Vector2[1] { V(0, 0) };
+	}
+	public static Vector2[] OffsetsForDotUp () {
+		return OffsetsForZUp();
+	}
+	public static Vector2[] OffsetsForDotRight () {
+		return OffsetsForZDefault();
+	}
+	public static Vector2[] OffsetsForDotDown () {
+		return OffsetsForZDefault();
 	}
 
 }

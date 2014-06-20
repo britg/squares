@@ -3,16 +3,11 @@ using System.Collections;
 
 public class DropController : GameController  {
 
-	DropTrayController playTrayController {
-		get { return GameObject.Find("Play Tray").GetComponent<DropTrayController>(); }
-	}
-
 	UISprite sprite {
 		get { return GetComponent<UISprite>(); }
 	}
 
 	public Drop drop;
-	public int trayPosition;
 
 	// Use this for initialization
 	void Start () {
@@ -46,21 +41,32 @@ public class DropController : GameController  {
 			foreach(Tile tile in dropTiles) {
 				tile.SetOwner(player);
 			}
-			NotificationCenter.PostNotification(this, Notifications.DropUsed);
-			Destroy(gameObject);
+			dropQueueController.DropUsed(drop);
+			NotificationCenter.PostNotification(this, Notifications.TileOwnershipChange);
 		} else {
-			MoveToPlayablePosition();
+			AnimateToQueuePosition();
 		}
+
+		NotificationCenter.PostNotification(this, Notifications.TileStateChange);
 	}
 
 	public void MoveToPlayablePosition () {
 		iTween.MoveTo(gameObject, iTween.Hash("isLocal", true, 
-		                                      "position", playTrayController.playableDropPosition, 
+		                                      "position", dropQueueController.playableDropPosition, 
 		                                      "time", 0.5f));
 	}
 
 	public void UpdateSprite () {
 		sprite.spriteName = drop.pattern.ToString().ToLower();
 	}
+	
+	public void AnimateToQueuePosition () {
+		float y = drop.currentQueuePosition * dropQueueController.dropSpacing;
+		Vector3 pos = dropQueueController.playableDropPosition + new Vector3(0f, y, 0f);
+		iTween.MoveTo (gameObject, iTween.Hash("position", pos, "isLocal", true, "time", 0.5f));
+	}
 
+	public void Destroy() {
+		Destroy (gameObject);
+	}
 }
