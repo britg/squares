@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class DropQueue {
 
+	Player owner;
 	public List<Drop> dropList;
 	int dropCount;
 	int sequenceId = 0;
 
-	public DropQueue (int numDrops) {
+	public DropQueue (int numDrops, Player _owner) {
+		owner = _owner;
 		dropCount = numDrops;
 		SeedDrops();
 	}
@@ -23,6 +25,7 @@ public class DropQueue {
 	
 	public void AddDrop (int position) {
 		Drop drop = Drop.RandomDrop();
+		drop.owner = owner;
 		drop.currentQueuePosition = position;
 		drop.sequenceId = sequenceId;
 		dropList.Add(drop);

@@ -71,6 +71,13 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	protected Player ownerForType (OwnerType type) {
+		if (type == OwnerType.Player) {
+			return player;
+		}
+		return opponent;
+	}
+
 	IInputController _inputController;
 	protected IInputController inputController {
 		get {
@@ -114,24 +121,42 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	GameObject _dropQueueObj;
-	protected GameObject dropQueueObj {
-		get {
-			if (_dropQueueObj == null) {
-				_dropQueueObj = GameObject.Find ("Drop Queue");
+	GameObject _dropQueueObjPlayer;
+	GameObject _dropQueueObjOpponent;
+	protected GameObject dropQueueObjForOnwer (OwnerType ownerType) {
+		return dropQueueObjForOwner(ownerForType(ownerType));
+	}
+	protected GameObject dropQueueObjForOwner (Player owner) {
+		if (owner.ownerType == OwnerType.Player) {
+			if (_dropQueueObjPlayer == null) {
+				_dropQueueObjPlayer = GameObject.Find ("Drop Queue " + owner.boardSide);
 			}
-			return _dropQueueObj;
+			return _dropQueueObjPlayer;
 		}
+		if (_dropQueueObjOpponent == null) {
+			_dropQueueObjOpponent = GameObject.Find ("Drop Queue " + owner.boardSide);
+		}
+		return _dropQueueObjOpponent;
 	}
 
-	DropQueueController _dropQueueController;
-	protected DropQueueController dropQueueController {
-		get {
-			if (_dropQueueController == null) {
-				_dropQueueController = dropQueueObj.GetComponent<DropQueueController>();
+	DropQueueController _dropQueueControllerPlayer;
+	DropQueueController _dropQueueControllerOpponent;
+	protected DropQueueController dropQueueControllerForOwner (OwnerType ownerType) {
+		return dropQueueControllerForOwner(ownerForType(ownerType));
+	}
+	protected DropQueueController dropQueueControllerForOwner (Player owner) {
+		if (player.ownerType == OwnerType.Player) {
+			if (_dropQueueControllerPlayer == null) {
+				_dropQueueControllerPlayer = dropQueueObjForOwner(owner).GetComponent<DropQueueController>();
 			}
-			return _dropQueueController;
+			return _dropQueueControllerPlayer;
 		}
+
+		if (_dropQueueControllerOpponent == null) {
+			_dropQueueControllerOpponent = dropQueueObjForOwner(owner).GetComponent<DropQueueController>();
+		}
+		return _dropQueueControllerOpponent;
+
 	}
 
 	TurnController _turnController;

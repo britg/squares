@@ -10,5 +10,7 @@ public class Player : ITileOccupant {
 	public int attack = 0;
 	public int life = 20;
 
+	public OwnerType ownerType;
+	public BoardSide boardSide;
 
 }

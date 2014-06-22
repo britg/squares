@@ -3,6 +3,12 @@ using System.Collections;
 
 public class DropController : GameController  {
 
+	DropQueueController dropQueueController {
+		get {
+			return dropQueueControllerForOwner(drop.owner);
+		}
+	}
+
 	UISprite sprite {
 		get { return GetComponent<UISprite>(); }
 	}

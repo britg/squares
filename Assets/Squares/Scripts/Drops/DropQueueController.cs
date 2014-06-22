@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DropQueueController : MonoBehaviour {
+public class DropQueueController : GameController {
 
 	Vector3 initialDropPosition;
 	public Vector3 playableDropPosition;
 	public float dropSpacing = 100f;
 	public int initialDropCount;
-
 	public GameObject dropPrefab;
+	public OwnerType ownerType;
 
 	DropQueue dropQueue;
 
 	// Use this for initialization
 	void Start () {
 		GetInitialDropPosition();
-		dropQueue = new DropQueue(initialDropCount);
+		dropQueue = new DropQueue(initialDropCount, ownerForType(ownerType));
 		NotificationCenter.AddObserver(this, Notifications.DropUsed);
 		Invoke("RenderDrops", 1f);
 	}
@@ -38,7 +38,7 @@ public class DropQueueController : MonoBehaviour {
 	}
 
 	DropController ControllerForDrop (Drop drop) {
-		GameObject dropObject = GameObject.Find("Drop " + drop.sequenceId);
+		GameObject dropObject = GameObject.Find(drop.name);
 		if (dropObject == null) {
 			dropObject = CreateObjectForDrop(drop);
 		}

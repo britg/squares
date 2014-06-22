@@ -27,9 +27,10 @@ public class Drop {
 	public Drop.Rotation rotation = Drop.Rotation.Default;
 	public int currentQueuePosition;
 	public int sequenceId;
+	public Player owner;
 
 	public string name {
-		get { return "Drop " + sequenceId; }
+		get { return "Drop " + sequenceId + " " + owner.ownerType.ToString(); }
 	}
 
 	public static Drop RandomDrop () {
