@@ -26,7 +26,7 @@ public class TurnController : MonoBehaviour {
 	}
 
 	void OnTick () {
-		UpdateTurn (1f);
+//		UpdateTurn (1f);
 	}
 
 	void UpdateTurn (float timeElapsed) {

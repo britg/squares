@@ -48,7 +48,7 @@ public class MouseInputController : MonoBehaviour, IInputController {
 
 		if (!_uiLock && mouseHold) {
 			// Pass through to move controller
-			MoveFrame();
+			//MoveFrame();
 		}
 
 		if (_uiLock && mouseHold) {

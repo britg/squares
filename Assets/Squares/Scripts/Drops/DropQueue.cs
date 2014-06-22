@@ -39,7 +39,7 @@ public class DropQueue {
 	void FillIn() {
 		int missing = 0;
 		List<Drop> newList = new List<Drop>();
-		for (int i = 0; i < dropCount; i++) {
+		for (int i = 0; i < dropList.Count/*dropCount*/; i++) {
 			Drop drop = dropList[i];
 
 			if (drop == null) {
@@ -54,7 +54,7 @@ public class DropQueue {
 		dropList = newList;
 
 		for (int n = 0; n < missing; n++) {
-			AddDrop(dropList.Count);
+//			AddDrop(dropList.Count);
 		}
 
 	}
