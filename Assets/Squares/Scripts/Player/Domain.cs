@@ -15,7 +15,7 @@ public class Domain {
 	}
 
 	public void ParseTiles (TileCollection tileCollection) {
-		Debug.Log ("Parsing tiles for domain");
+//		Debug.Log ("Parsing tiles for domain");
 		tilesOwned = 0;
 		blocksOwned = 0;
 		blockOwnership = new Hashtable();
@@ -31,12 +31,12 @@ public class Domain {
 				if (blockOwnership[block] == null) {
 					blockOwnership[block] = true;
 					blocksOwned += 1;
-					Debug.Log ("I own block " + block);
+//					Debug.Log ("I own block " + block);
 				}
 			} else {
 				if (blockOwnership[block] != null && (bool)blockOwnership[block] == true) {
 					blocksOwned -= 1;
-					Debug.Log ("I don't own block " + block);
+//					Debug.Log ("I don't own block " + block);
 				}
 				blockOwnership[block] = false;
 			}

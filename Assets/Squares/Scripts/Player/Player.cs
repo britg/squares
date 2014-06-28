@@ -13,4 +13,11 @@ public class Player : ITileOccupant {
 	public OwnerType ownerType;
 	public BoardSide boardSide;
 
+	public Tile homeTile;
+
+	public override string ToString ()
+	{
+		return string.Format ("[Player] id: " + id + " name: " + name);
+	}
+
 }

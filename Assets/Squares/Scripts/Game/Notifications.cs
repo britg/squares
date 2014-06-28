@@ -10,4 +10,6 @@ public static class Notifications {
 	public static string BlockOwnershipChange { get { return "OnBlockOwnershipChange"; } }
 	public static string DropUsed { get { return "OnDropUsed"; } }
 
+	public static string TurnChange { get { return "OnTurnChange"; } }
+
 }

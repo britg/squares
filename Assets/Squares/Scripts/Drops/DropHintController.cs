@@ -53,11 +53,11 @@ public class DropHintController : GameController {
 		dropValidator = new DropValidator(tileCollection);
 		Drop drop = inputController.currentDropController.drop;
 
-		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, player);
+		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, currentPlayer);
 
 		if (dropTiles != null) {
 			foreach(Tile tile in dropTiles) {
-				tile.Hint(player);
+				tile.Hint(currentPlayer);
 			}
 		}
 

@@ -26,7 +26,9 @@ public class TilesController : GameController {
 	void StartTiles () {
 		tileCollection = new TileCollection(completeDimensions, baseBlockDimensions);
 		tileCollection.bottomLeft.SetPlayer(player);
+		player.homeTile = tileCollection.bottomLeft;
 		tileCollection.topRight.SetPlayer(opponent);
+		opponent.homeTile = tileCollection.topRight;
 	}
 
 	void CreateBoard () {

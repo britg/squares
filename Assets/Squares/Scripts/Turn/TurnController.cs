@@ -1,44 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TurnController : MonoBehaviour {
+public class TurnController : GameController {
 
 	public float turnTime;
 	public Turn currentTurn;
 
 	public TurnView turnView;
 
+	[System.NonSerialized]
+	public Player turnPlayer;
+
 	// Use this for initialization
 	void Start () {
 		currentTurn = new Turn(0, turnTime);
-		NotificationCenter.AddObserver(this, Notifications.Tick);
+//		NotificationCenter.AddObserver(this, Notifications.Tick);
+		Invoke ("ChangeTurn", 1f);
+	}
+
+	public void ChangeTurn () {
+		if (currentPlayer == null || currentPlayer == opponent) {
+			Debug.Log ("Player's turn");
+			turnPlayer = player;
+		} else {
+			Debug.Log ("Opponent's Turn");
+			turnPlayer = opponent;
+		}
+
+		NotificationCenter.PostNotification(this, Notifications.TurnChange);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-	}
-
-	void NextTurn () {
-		currentTurn = new Turn(currentTurn.id + 1, turnTime);
-		NotificationCenter.PostNotification(this, Notifications.Turn);
-		UpdateDisplay();
-	}
-
-	void OnTick () {
-//		UpdateTurn (1f);
-	}
-
-	void UpdateTurn (float timeElapsed) {
-		currentTurn.timeElapsed += timeElapsed;
-		if (currentTurn.timeRemaining <= 0f) {
-			NextTurn();
-		}
-		UpdateDisplay ();
-	}
-
-	void UpdateDisplay () {
-		turnView.Refresh(currentTurn);
 	}
 
 }

@@ -11,6 +11,10 @@ public class GameController : MonoBehaviour {
 
 	public static InputMode inputMode = InputMode.Mouse;
 
+	protected Player currentPlayer {
+		get { return turnController.turnPlayer; }
+	}
+
 	GameObject _playerObject;
 	protected GameObject playerObject {
 		get { 
@@ -76,6 +80,14 @@ public class GameController : MonoBehaviour {
 			return player;
 		}
 		return opponent;
+	}
+
+	protected Player enemyTo (Player _player) {
+		if (_player == player) {
+			return opponent;
+		} else {
+			return player;
+		}
 	}
 
 	IInputController _inputController;

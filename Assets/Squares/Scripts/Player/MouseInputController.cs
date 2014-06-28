@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MouseInputController : MonoBehaviour, IInputController {
+public class MouseInputController : GameController, IInputController {
 
 	public Camera uiCamera;
 	public CameraMoveController cameraMoveController;
@@ -48,7 +48,7 @@ public class MouseInputController : MonoBehaviour, IInputController {
 
 		if (!_uiLock && mouseHold) {
 			// Pass through to move controller
-			//MoveFrame();
+			MoveFrame();
 		}
 
 		if (_uiLock && mouseHold) {
@@ -86,7 +86,7 @@ public class MouseInputController : MonoBehaviour, IInputController {
 
 		if (didHit) {
 			_currentDropController = hit.collider.gameObject.GetComponent<DropController>();
-			if (_currentDropController != null) {
+			if (_currentDropController != null && _currentDropController.owner == currentPlayer) {
 				_holdingDrop = true;
 			}
 		}

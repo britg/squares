@@ -33,6 +33,14 @@ public class TileCollection {
 		return allTiles;
 	}
 
+	public Tile TileAt(float x, float y) {
+		return TileAt(new Vector2(x, y));
+	}
+
+	public Tile TileAt(int x, int y) {
+		return TileAt(new Vector2(x, y));
+	}
+
 	public Tile TileAt (Vector2 coords) {
 		if (OutOfBounds(coords)) {
 			return null;

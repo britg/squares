@@ -18,19 +18,17 @@ public class DropQueue {
 	
 	void SeedDrops () {
 		dropList = new List<Drop>();
-		for (int i = 0; i < dropCount; i++) {
-			AddDrop(i);
-		}
+		Renumerate();
 	}
 	
-	public void AddDrop (int position) {
-		Drop drop = Drop.RandomDrop();
+	public void AddDrop (int position, Drop drop) {
 		drop.owner = owner;
 		drop.currentQueuePosition = position;
 		drop.sequenceId = sequenceId;
 		dropList.Add(drop);
 		sequenceId++;
 	}
+
 
 	public void UseDrop (Drop drop) {
 		int i = dropList.IndexOf(drop);
@@ -56,10 +54,30 @@ public class DropQueue {
 
 		dropList = newList;
 
-		for (int n = 0; n < missing; n++) {
-//			AddDrop(dropList.Count);
-		}
+	}
 
+	bool HasDot () {
+		bool hasDot = false;
+		dropList.ForEach(delegate (Drop drop) {
+			if (drop.pattern == Drop.Pattern.Dot) {
+				hasDot = true;
+			}
+		});
+
+		return hasDot;
+	}
+
+	public void Renumerate () {
+		Drop drop;
+		int toFill = dropCount - dropList.Count;
+		for (int n = 0; n < toFill; n++) {
+			if (n == 0 && !HasDot()) {
+				drop = Drop.Dot();
+			} else {
+				drop = Drop.RandomDrop();
+			}
+			AddDrop (dropList.Count, drop);
+		}
 	}
 	
 }

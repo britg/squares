@@ -17,12 +17,18 @@ public class DropQueueController : GameController {
 		GetInitialDropPosition();
 		dropQueue = new DropQueue(initialDropCount, ownerForType(ownerType));
 		NotificationCenter.AddObserver(this, Notifications.DropUsed);
-		Invoke("RenderDrops", 1f);
+		NotificationCenter.AddObserver(this, Notifications.TurnChange);
+//		Invoke("RenderDrops", 1f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	void OnTurnChange () {
+		dropQueue.Renumerate();
+		RenderDrops();
 	}
 
 	void GetInitialDropPosition () {
@@ -33,6 +39,7 @@ public class DropQueueController : GameController {
 	void RenderDrops () {
 		foreach(Drop drop in dropQueue.dropList) {
 			DropController dropController = ControllerForDrop(drop);
+			dropController.ToggleDraggable();
 			dropController.AnimateToQueuePosition();
 		}
 	}

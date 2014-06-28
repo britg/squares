@@ -36,12 +36,20 @@ public class Tile {
 
 	string hintColor;
 
+	Tile.State previousState;
+
+	public string key {
+		get {
+			return "" + pos.x + "," + pos.y;
+		}
+	}
+
 	public string color {
 		get {
-			if (owner != null) {
-				return owner.color.ToString();
-			} else if (hintColor != null) {
+			if (hintColor != null) {
 				return hintColor;
+			} else if (owner != null) {
+				return owner.color.ToString();
 			} else {
 				return null;
 			}
@@ -61,19 +69,49 @@ public class Tile {
 
 	public void SetOwner (Player player) {
 		owner = player;
-		state = Tile.State.Full;
+		state = Tile.State.Half;
+	}
+
+	public void RemoveOwner () {
+		owner = null;
+		state = Tile.State.Empty;
+	}
+
+	public void Downgrade () {
+		if (state == Tile.State.Half) {
+			RemoveOwner ();
+		} else if (state == Tile.State.Full) {
+			state = Tile.State.Half;
+		}
 	}
 
 	public void Hint (Player player) {
+		if (state != State.Hinted) {
+			previousState = state;
+		}
 		state = State.Hinted;
 		hintColor = player.color.ToString();
 	}
 
 	public void Unhint () {
+		hintColor = null;
 		if (state == State.Hinted) {
-			state = State.Empty;
-			hintColor = null;
+			state = previousState;
 		}
+	}
+
+	public bool AdjacentTo (Tile tile) {
+		int xDiff = (int)Mathf.Abs(pos.x-tile.pos.x);
+		int yDiff = (int)Mathf.Abs(pos.y-tile.pos.y);
+		if (xDiff == 1) {
+			return yDiff == 0;
+		}
+
+		if (yDiff == 1) {
+			return xDiff == 0;
+		}
+
+		return false;
 	}
 
 	public override string ToString ()

@@ -87,7 +87,11 @@ public class DropValidator {
 			return false;
 		}
 
-		if (tile.state == Tile.State.Full) {
+		if (tile.owner != null) {
+			return false;
+		}
+
+		if (tile.occupant != null) {
 			return false;
 		}
 

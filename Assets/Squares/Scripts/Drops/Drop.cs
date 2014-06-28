@@ -35,13 +35,26 @@ public class Drop {
 
 	public static Drop RandomDrop () {
 		Drop drop = new Drop();
-		drop.pattern = Drop.RandomPattern();
+//		drop.pattern = Drop.RandomPattern();
+		drop.pattern = Drop.AnythingButDot();
+		return drop;
+	}
+
+	public static Drop Dot () {
+		Drop drop = new Drop();
+		drop.pattern = Drop.Pattern.Dot;
 		return drop;
 	}
 
 	public static Drop.Pattern RandomPattern () {
 		var values = System.Enum.GetValues(typeof(Drop.Pattern));
 		Drop.Pattern randomPattern = (Drop.Pattern)values.GetValue(Random.Range(0, values.Length));
+		return randomPattern;
+	}
+
+	public static Drop.Pattern AnythingButDot () {
+		var values = System.Enum.GetValues(typeof(Drop.Pattern));
+		Drop.Pattern randomPattern = (Drop.Pattern)values.GetValue(Random.Range(0, values.Length-1));
 		return randomPattern;
 	}
 

@@ -14,15 +14,30 @@ public class DropController : GameController  {
 	}
 
 	public Drop drop;
+	public Player owner {
+		get { return drop.owner; }
+	}
 
 	// Use this for initialization
 	void Start () {
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void ToggleDraggable () {
+		if (currentPlayer != owner) {
+			Destroy(GetComponent<UIDragObject>());
+		} else {
+			if (GetComponent<UIDragObject>() != null) {
+				return;
+			}
+			UIDragObject dragController = gameObject.AddComponent<UIDragObject>();
+			dragController.target = transform;
+			dragController.dragEffect = UIDragObject.DragEffect.None;
+		}
 	}
 
 	public void SetDrop (Drop _drop) {
@@ -41,11 +56,11 @@ public class DropController : GameController  {
 	public void CommitDrop () {
 		DropValidator dropValidator = new DropValidator(tileCollection);
 
-		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, player);
+		Tile[] dropTiles = dropValidator.ValidDropTiles(drop, inputController.currentHoverTile, currentPlayer);
 
 		if (dropTiles != null) {
 			foreach(Tile tile in dropTiles) {
-				tile.SetOwner(player);
+				tile.SetOwner(currentPlayer);
 			}
 			dropQueueController.DropUsed(drop);
 			NotificationCenter.PostNotification(this, Notifications.TileOwnershipChange);

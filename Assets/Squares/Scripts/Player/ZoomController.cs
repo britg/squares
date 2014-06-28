@@ -33,7 +33,7 @@ public class ZoomController : MonoBehaviour {
 		} else if (tooFar) {
 			BounceIn();
 		} else {
-			//DetectInput();
+			DetectInput();
 		}
 
 	}
