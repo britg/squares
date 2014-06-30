@@ -12,6 +12,7 @@ public class Player : ITileOccupant {
 
 	public OwnerType ownerType;
 	public BoardSide boardSide;
+	public Domain domain;
 
 	public Tile homeTile;
 

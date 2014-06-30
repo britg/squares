@@ -36,7 +36,8 @@ public class Drop {
 	public static Drop RandomDrop () {
 		Drop drop = new Drop();
 //		drop.pattern = Drop.RandomPattern();
-		drop.pattern = Drop.AnythingButDot();
+		drop.pattern = Drop.AllowedPattern();
+		drop.rotation = Drop.RandomRotation();
 		return drop;
 	}
 
@@ -56,6 +57,21 @@ public class Drop {
 		var values = System.Enum.GetValues(typeof(Drop.Pattern));
 		Drop.Pattern randomPattern = (Drop.Pattern)values.GetValue(Random.Range(0, values.Length-1));
 		return randomPattern;
+	}
+
+	public static Drop.Pattern AllowedPattern () {
+		Drop.Pattern pattern = RandomPattern();
+		if (pattern == Drop.Pattern.Dot || pattern == Drop.Pattern.O) {
+			return AllowedPattern();
+		} else {
+			return pattern;
+		}
+	}
+
+	public static Drop.Rotation RandomRotation () {
+		var values = System.Enum.GetValues(typeof(Drop.Rotation));
+		Drop.Rotation randomRotation = (Drop.Rotation)values.GetValue(Random.Range(0, values.Length));
+		return randomRotation;
 	}
 
 	static Vector2 V (int x, int y) {

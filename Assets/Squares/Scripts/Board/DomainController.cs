@@ -4,42 +4,46 @@ using System.Collections.Generic;
 
 public class DomainController : GameController {
 
-	public Domain domain;
+	public Vector2 squareSize;
+	public GameObject squarePrefab;
 
 	void Start () {
-		domain = new Domain(player);
 		NotificationCenter.AddObserver(this, Notifications.TileOwnershipChange);
 	}
 
 	void OnTileOwnershipChange () {
 		Debug.Log ("Tile ownership change");
 		RefreshDomain();
-		DetectSingleSquares(currentPlayer);
+		DetectSquares(currentPlayer);
 		DetectTakeover(currentPlayer);
 		NotificationCenter.PostNotification(this, Notifications.TileStateChange);
 	}
 
 	void RefreshDomain () {
-		int previous = domain.tilesOwned;
-		domain.ParseTiles(tileCollection);
-		if (previous != domain.tilesOwned) {
+		int previous = currentPlayer.domain.tilesOwned;
+		currentPlayer.domain.ParseTiles(tileCollection);
+		if (previous != currentPlayer.domain.tilesOwned) {
 			NotificationCenter.PostNotification(this, Notifications.BlockOwnershipChange);
 		}
 	}
 
-	void DetectSingleSquares (Player player) {
+	void DetectSquares (Player player) {
 		ResetToHalf(player);
-		SingleSquareDetector detector = new SingleSquareDetector(tileCollection);
+		SquareDetector detector = new SquareDetector(tileCollection, squareSize);
 		Hashtable squares = detector.Squares(player);
-		domain.blocksOwned = squares.Count;
+		currentPlayer.domain.blocksOwned = squares.Count;
 
 		foreach(string key in squares.Keys) {
-			List<Tile> squareTiles = (List<Tile>)squares[key];
-			foreach (Tile tile in squareTiles) {
-				tile.state = Tile.State.Full;
-			}
+			CreateSquare((List<Tile>)squares[key]);
 		}
 
+	}
+
+	void CreateSquare (List<Tile> tiles) {
+		Square square = new Square(currentPlayer, tiles);
+		GameObject squareObj = (GameObject)Instantiate(squarePrefab);
+		SquareController squareController = squareObj.GetComponent<SquareController>();
+		squareController.square = square;
 	}
 
 	void ResetToHalf (Player player) {
@@ -63,8 +67,8 @@ public class DomainController : GameController {
 
 		if (tookOverAtLeastOne) {
 			Debug.Log ("Took over one, detecting squares");
-			DetectSingleSquares(player);
-			DetectSingleSquares(enemyTo(player));
+			DetectSquares(player);
+			DetectSquares(enemyTo(player));
 		}
 	}
 

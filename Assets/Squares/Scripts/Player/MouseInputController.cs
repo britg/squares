@@ -11,7 +11,7 @@ public class MouseInputController : GameController, IInputController {
 	bool mouseHold { get { return Input.GetMouseButton(0); } }
 	bool mouseUp { get { return Input.GetMouseButtonUp(0); } }
 	bool mouseRightDown { get { return Input.GetMouseButtonDown(1); } }
-	bool rPressed { get { return Input.GetKey(KeyCode.R); } }
+	bool rPressed { get { return Input.GetKeyDown(KeyCode.R); } }
 	bool rotatePressed { get { return (rPressed || mouseRightDown); } }
 	bool mouseMoved { get { return Input.GetAxis("Mouse X") > 0f || Input.GetAxis("Mouse Y") > 0f; } }
 

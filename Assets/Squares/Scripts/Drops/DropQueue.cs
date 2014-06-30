@@ -71,11 +71,12 @@ public class DropQueue {
 		Drop drop;
 		int toFill = dropCount - dropList.Count;
 		for (int n = 0; n < toFill; n++) {
-			if (n == 0 && !HasDot()) {
-				drop = Drop.Dot();
-			} else {
-				drop = Drop.RandomDrop();
-			}
+//			if (n == 0 && !HasDot()) {
+//				drop = Drop.Dot();
+//			} else {
+//				drop = Drop.RandomDrop();
+//			}
+			drop = Drop.RandomDrop();
 			AddDrop (dropList.Count, drop);
 		}
 	}

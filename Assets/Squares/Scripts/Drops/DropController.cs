@@ -49,8 +49,16 @@ public class DropController : GameController  {
 		// Need to decouple the tween rotation here
 		if (iTween.Count(gameObject) < 1) {
 			drop.Rotate();
-			iTween.RotateBy (gameObject, new Vector3(0f, 0f, -0.25f), 0.3f);
+			DisplayRotation();
 		}
+	}
+
+	void DisplayRotation () {
+		int count = (int)drop.rotation;
+		Vector3 angles = transform.eulerAngles;
+		angles.z = -90f*count;
+		transform.eulerAngles = angles;
+//		iTween.RotateBy (gameObject, new Vector3(0f, 0f, -0.25f*count), 0.3f);
 	}
 
 	public void CommitDrop () {
@@ -79,6 +87,7 @@ public class DropController : GameController  {
 
 	public void UpdateSprite () {
 		sprite.spriteName = drop.pattern.ToString().ToLower();
+		DisplayRotation();
 	}
 	
 	public void AnimateToQueuePosition () {

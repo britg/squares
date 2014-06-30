@@ -4,14 +4,12 @@ using System.Collections;
 [System.Serializable]
 public class Domain {
 
-	public Player player;
 	public int tilesOwned = 0;
 	public int blocksOwned = 0;
 
 	Hashtable blockOwnership;
 
-	public Domain (Player _player) {
-		player = _player;
+	public Domain () {
 	}
 
 	public void ParseTiles (TileCollection tileCollection) {
@@ -26,7 +24,7 @@ public class Domain {
 			int blockY = Mathf.FloorToInt(tile.pos.y / tileCollection.blockSize.y);
 			string block = blockX.ToString() + "," + blockY.ToString();
 
-			if (tile.owner == player) {
+			if (tile.owner != null && tile.owner.domain == this) {
 				tilesOwned++;
 				if (blockOwnership[block] == null) {
 					blockOwnership[block] = true;
