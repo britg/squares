@@ -20,6 +20,10 @@ public class DropQueue {
 		dropList = new List<Drop>();
 		Renumerate();
 	}
+
+	public void AddDrop () {
+		AddDrop(dropList.Count, Drop.RandomDrop());
+	}
 	
 	public void AddDrop (int position, Drop drop) {
 		drop.owner = owner;

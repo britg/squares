@@ -16,6 +16,5 @@ public class TurnView : MonoBehaviour {
 	}
 
 	public void Refresh (Turn turn) {
-		turnTimerValue.text = Mathf.RoundToInt(turn.timeRemaining).ToString();
 	}
 }

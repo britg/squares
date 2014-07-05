@@ -18,7 +18,6 @@ public class DropQueueController : GameController {
 		dropQueue = new DropQueue(initialDropCount, ownerForType(ownerType));
 		NotificationCenter.AddObserver(this, Notifications.DropUsed);
 		NotificationCenter.AddObserver(this, Notifications.TurnChange);
-//		Invoke("RenderDrops", 1f);
 	}
 	
 	// Update is called once per frame
@@ -27,7 +26,12 @@ public class DropQueueController : GameController {
 	}
 
 	void OnTurnChange () {
-		dropQueue.Renumerate();
+//		dropQueue.Renumerate();
+		RenderDrops();
+	}
+
+	public void SquareUsed () {
+		dropQueue.AddDrop();
 		RenderDrops();
 	}
 

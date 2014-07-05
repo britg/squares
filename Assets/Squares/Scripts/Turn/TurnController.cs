@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TurnController : GameController {
 
@@ -11,23 +12,43 @@ public class TurnController : GameController {
 	[System.NonSerialized]
 	public Player turnPlayer;
 
+	Hashtable turns;
+
 	// Use this for initialization
 	void Start () {
-		currentTurn = new Turn(0, turnTime);
-//		NotificationCenter.AddObserver(this, Notifications.Tick);
+		turns = new Hashtable();
 		Invoke ("ChangeTurn", 1f);
 	}
 
 	public void ChangeTurn () {
-		if (currentPlayer == null || currentPlayer == opponent) {
-			Debug.Log ("Player's turn");
-			turnPlayer = player;
-		} else {
-			Debug.Log ("Opponent's Turn");
-			turnPlayer = opponent;
-		}
+
+		SetTurnPlayer();
+		NextTurn();
 
 		NotificationCenter.PostNotification(this, Notifications.TurnChange);
+	}
+
+	public void SetTurnPlayer () {
+
+		if (currentPlayer == null || currentPlayer == opponent) {
+			turnPlayer = player;
+		} else {
+			turnPlayer = opponent;
+		}
+	}
+
+	public void NextTurn () {
+		List<Turn> playerTurns = (List<Turn>)turns[currentPlayer.id];
+		int nextTurn = 1;
+		if (playerTurns == null) {
+			playerTurns = new List<Turn>();
+		} else {
+			Turn lastTurnForPlayer = playerTurns[playerTurns.Count - 1];
+			nextTurn = lastTurnForPlayer.id + 1;
+		}
+		currentTurn = new Turn(currentPlayer, nextTurn);
+		playerTurns.Add(currentTurn);
+		turns[currentPlayer.id] = playerTurns;
 	}
 	
 	// Update is called once per frame

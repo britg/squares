@@ -29,6 +29,8 @@ public class MouseInputController : GameController, IInputController {
 
 	Vector3 lastPos;
 
+	SquareController _currentSquareController;
+
 	void Update () {
 		DetectInput();
 	}
@@ -41,6 +43,8 @@ public class MouseInputController : GameController, IInputController {
 				return;
 			}
 
+			CheckSquareDown();
+
 			// move
 			StartMove();
 
@@ -52,7 +56,7 @@ public class MouseInputController : GameController, IInputController {
 		}
 
 		if (_uiLock && mouseHold) {
-			CheckTileHit();
+			CheckTileHover();
 
 			if (_holdingDrop && rotatePressed) {
 				_currentDropController.RotateDrop();
@@ -60,11 +64,12 @@ public class MouseInputController : GameController, IInputController {
 		}
 
 		if (mouseUp && _holdingDrop) {
-			CheckTileHit();
+			CheckTileHover();
 			_currentDropController.CommitDrop();
 		}
 
 		if (mouseUp) {
+			CheckSquareUp();
 			Reset();
 		}
 	}
@@ -94,7 +99,41 @@ public class MouseInputController : GameController, IInputController {
 		return didHit;
 	}
 
-	bool CheckTileHit () {
+	void CheckSquareDown () {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		
+		if (Physics.Raycast(ray, out hit)) {
+			GameObject hitObj = hit.collider.gameObject;
+			SquareView squareView = hitObj.GetComponent<SquareView>();
+			if (squareView != null) {
+				_currentSquareController = squareView.squareController;
+			} 
+		} 
+	}
+
+	void CheckSquareUp () {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		
+		if (Physics.Raycast(ray, out hit)) {
+			GameObject hitObj = hit.collider.gameObject;
+			SquareView squareView = hitObj.GetComponent<SquareView>();
+			if (squareView != null) {
+				SquareController thisSquareController = squareView.squareController;
+
+				if (thisSquareController == _currentSquareController) {
+					TriggerSquare(_currentSquareController);
+				}
+			} 
+		} 
+	}
+
+	void TriggerSquare (SquareController squareController) {
+		squareController.AttemptUse();
+	}
+
+	bool CheckTileHover () {
 		
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
@@ -123,6 +162,7 @@ public class MouseInputController : GameController, IInputController {
 		_uiLock = false;
 		_holdingDrop = false;
 		_currentDropController = null;
+		_currentSquareController = null;
 	}
 
 }

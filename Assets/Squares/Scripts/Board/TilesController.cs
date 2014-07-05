@@ -25,11 +25,15 @@ public class TilesController : GameController {
 
 	void StartTiles () {
 		tileCollection = new TileCollection(completeDimensions, baseBlockDimensions);
-		tileCollection.bottomLeft.SetPlayer(player);
-		player.homeTile = tileCollection.bottomLeft;
+
+		Tile playerOneTile = tileCollection.TileAt(1, 1);
+		playerOneTile.SetPlayer(player);
+		player.homeTile = playerOneTile;
 		player.domain = new Domain();
-		tileCollection.topRight.SetPlayer(opponent);
-		opponent.homeTile = tileCollection.topRight;
+
+		Tile playerTwoTile = tileCollection.TileAt(boardDimensions.x-2, boardDimensions.y-2);
+		playerTwoTile.SetPlayer(opponent);
+		opponent.homeTile = playerTwoTile;
 		opponent.domain = new Domain();
 	}
 

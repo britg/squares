@@ -54,7 +54,7 @@ public class DropValidator {
 		bool oneAdjacent = false;
 		foreach (Tile tile in tiles) {
 //			Debug.Log ("Checking tile " + tile);
-			if (!TileDroppable(tile)) {
+			if (!TileDroppable(tile, player)) {
 				return false;
 			}
 
@@ -82,12 +82,20 @@ public class DropValidator {
 		return tiles;
 	}
 	
-	bool TileDroppable (Tile tile) {
+	bool TileDroppable (Tile tile, Player currentPlayer) {
 		if (tile == null) {
 			return false;
 		}
 
 		if (tile.owner != null) {
+//			return false;
+		}
+
+		if (tile.owner == currentPlayer) {
+			return false;
+		}
+
+		if (tile.state == Tile.State.Full) {
 			return false;
 		}
 

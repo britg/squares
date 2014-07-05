@@ -73,6 +73,9 @@ public class Tile {
 	}
 
 	public void RemoveOwner () {
+		if (occupant != null) {
+			return;
+		}
 		owner = null;
 		state = Tile.State.Empty;
 	}

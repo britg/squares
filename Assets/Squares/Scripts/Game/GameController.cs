@@ -113,6 +113,16 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	GameObject _gameObject;
+	protected GameObject gameStateObject {
+		get {
+			if (_gameObject == null) {
+				_gameObject = GameObject.Find("Game");
+			}
+			return _gameObject;
+		}
+	}
+
 	TilesController _tilesController;
 	protected TilesController tilesController {
 		get { 
@@ -175,10 +185,21 @@ public class GameController : MonoBehaviour {
 	protected TurnController turnController {
 		get {
 			if (_turnController == null) {
-				_turnController = boardObject.GetComponent<TurnController>();
+				_turnController = gameStateObject.GetComponent<TurnController>();
 			}
 			return _turnController;
 		}
 	}
+
+	SquaresController _squaresController;
+	protected SquaresController squaresController {
+		get {
+			if (_squaresController == null) {
+				_squaresController = GameObject.Find("Squares").GetComponent<SquaresController>();
+			}
+			return _squaresController;
+		}
+	}
+
 
 }

@@ -5,17 +5,13 @@ using System.Collections;
 public class Turn {
 
 	public int id = 1;
+	public Player player;
 	public float nextTurnTime = 10f;
 	public float timeElapsed = 0f;
 
-	public float timeRemaining {
-		get { return nextTurnTime - timeElapsed; }
-	}
-
-	public Turn (int turnNum, float turnTime) {
+	public Turn (Player _player, int turnNum) {
+		player = _player;
 		id = turnNum;
-		nextTurnTime = turnTime;
 	}
-
 
 }

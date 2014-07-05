@@ -58,9 +58,9 @@ public class SquareDetector {
 	void ParseTileAt (int x, int y) {
 		Tile tile = tileCollectionReference.TileAt(new Vector2(x, y));
 		if (ValidTile(tile)) {
-			List<Tile> square = DetectSquareAtTile(tile);
+			Square square = DetectSquareAtTile(tile);
 			if (square != null) {
-				usedTiles.AddRange(square);
+				usedTiles.AddRange(square.tiles);
 				squares[tile.key] = square;
 			}
 		}
@@ -73,7 +73,7 @@ public class SquareDetector {
 				&& (tile.state == Tile.State.Half || tile.occupant == currentPlayer);
 	}
 
-	List<Tile> DetectSquareAtTile (Tile tile) {
+	Square DetectSquareAtTile (Tile tile) {
 		List<Tile> possibleSquare = new List<Tile>();
 //		possibleSquare.Add(tile);
 		for(int x = 0; x < (int)squareSize.x; x++) {
@@ -83,9 +83,6 @@ public class SquareDetector {
 				possibleSquare.Add(tileCollectionReference.TileAt(testX, testY));
 			}
 		}
-//		possibleSquare.Add(tileCollectionReference.TileAt(tile.pos.x, tile.pos.y+parseDirection));
-//		possibleSquare.Add(tileCollectionReference.TileAt(tile.pos.x+parseDirection, tile.pos.y+parseDirection));
-//		possibleSquare.Add(tileCollectionReference.TileAt(tile.pos.x+parseDirection, tile.pos.y));
 
 		foreach(Tile check in possibleSquare) {
 			if (!ValidTile(check)) {
@@ -93,7 +90,9 @@ public class SquareDetector {
 			}
 		}
 
-		return possibleSquare;
+		Square square = new Square(currentPlayer, possibleSquare);
+
+		return square;
 	}
 	
 

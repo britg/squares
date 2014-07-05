@@ -2,16 +2,12 @@
 using System.Collections;
 using Vectrosity;
 
-public class GridController : MonoBehaviour {
+public class GridController : GameController {
 
 	public Color minorLineColor = Color.grey;
 	public Color majorLineColor = new Color(0.9f, 0.9f, 0.9f);
 
-	TilesController tilesController {
-		get {
-			return gameObject.GetComponent<TilesController>();
-		}
-	}
+	public bool drawGrid = false;
 
 	float height {
 		get { return tilesController.completeDimensions.y * (tilesController.tileWidth + tilesController.tileSpacing); }
@@ -32,7 +28,9 @@ public class GridController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		DrawGrid();
+		if (drawGrid) {
+			DrawGrid();
+		}
 	}
 	
 	// Update is called once per frame
