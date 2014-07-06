@@ -29,9 +29,11 @@ public class SquareController : GameController {
 
 	void Use () {
 		Debug.Log ("Using square");
-		square.Use();
+		square.Use(turnController.currentTurn);
 		dropQueueControllerForOwner(square.owner).SquareUsed();
 		NotificationCenter.PostNotification(this, Notifications.TileStateChange);
-		Destroy(gameObject);
+		if (square.state == Square.State.Used) {
+			Destroy(gameObject);
+		}
 	}
 }

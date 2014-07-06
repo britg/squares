@@ -69,6 +69,7 @@ public class SquareDetector {
 	bool ValidTile (Tile tile) {
 		return tile != null
 				&& tile.owner == currentPlayer 
+				&& tile.occupant == null
 				&& !usedTiles.Contains(tile) 
 				&& (tile.state == Tile.State.Half || tile.occupant == currentPlayer);
 	}
