@@ -38,6 +38,13 @@ public class TileView : MonoBehaviour {
 			stateObj.transform.parent = transform;
 			stateObj.transform.localPosition = new Vector3(0f, 0f, TileView.zIndexForLayer(Tile.Layer.Color));
 		}
+
+		if (tile.occupant != null) {
+			GameObject homeLayerPrefab = (GameObject)Resources.Load("Home");
+			GameObject homeLayer = (GameObject)Instantiate(homeLayerPrefab);
+			homeLayer.transform.parent = transform;
+			homeLayer.transform.localPosition = new Vector3(0f, 0f, TileView.zIndexForLayer(Tile.Layer.Occupant));
+		}
 	}
 
 	void ClearTile () {
